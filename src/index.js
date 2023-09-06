@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //routes
-//app.use('/test-it',routes)
+//app.use('/test-it',routes);
 app.use(`/${PROJECT_NAME}`, routes);
 
 //error handler
