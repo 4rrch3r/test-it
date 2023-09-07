@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const checkRights = require('../utils/checkRights');
-
-// eslint-disable-next-line import/extensions
-// eslint-disable-next-line import/extensions
 const resultController = require('../controllers/index.js').resultController;
 
 router.get('/',checkRights("admin"),  resultController.getResults); // List all users public (public cutted info)
