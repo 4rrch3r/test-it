@@ -12,7 +12,6 @@ const swaggerOutput = require('../docs/swaggerOutput.json');
 const PORT = process.env.PORT || 3000;
 const MONGODB_URL = process.env.MONGODB_URL;
 const PROJECT_NAME = process.env.PROJECT_NAME;
-const API_URL = process.env.API_URL;
 //middlewares
 
 app.use(cors());
@@ -32,23 +31,6 @@ app.use((err,req,res,next)=>
     return res.status(status).json({message,stack:err.stack});
 });
 
-const options = {
-  definition:{
-    openapi:'3.0.0',
-    info:{
-      title:PROJECT_NAME,
-      version:'1.0.0'
-    },
-    servers:[
-      {
-        url:`${API_URL}:${PORT}`
-      }
-    ]
-  },
-  apis:['./routes/*.js']
-}
-
-const swaggerSpec = swaggerJSDoc(options);
 app.use(`/${PROJECT_NAME}/docs`,swaggerUI.serve,swaggerUI.setup(swaggerOutput))
 
 let server;
