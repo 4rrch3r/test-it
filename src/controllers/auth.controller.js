@@ -41,12 +41,12 @@ const login = async (req, res, next) => {
     user.password,
   );
   if (!isPasswordCorrect) {
-      throw new apiError(400, "Password is incorrect");
+      throw new apiError(401, "Password is incorrect");
   }
   const payload = {
     id: user.id,
     name: user.name,
-    rights:user.rights
+    role:user.role
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: "1d",

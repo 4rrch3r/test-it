@@ -1,5 +1,6 @@
 const apiError = require("../utils/apiError.js");
 const userModel = require("../models/index.js").User;
+const bcryptjs = require("bcrypt");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -12,7 +13,13 @@ const getUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const user = await userModel.findById(req.params.id).exec();
+    let user;
+    if (
+      (req.user.role == "user" && req.user.id == req.params.id) ||
+      req.user.role == "admin"
+    ) {
+      user = await userModel.findById(req.params.id).exec();
+    }
     if (!user) {
       throw new apiError(404, "User was not found");
     }
@@ -24,10 +31,15 @@ const getUser = async (req, res, next) => {
 
 const postUser = async (req, res, next) => {
   try {
+    if (!req.body.name || !req.body.email || !req.body.password) {
+      throw new apiError(400, "Name,email and password are required");
+    }
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(req.body.password, salt);
     const newUser = new userModel({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: hashedPassword,
       role: req.body.role,
     });
     const savedUser = await newUser.save();
@@ -39,16 +51,27 @@ const postUser = async (req, res, next) => {
 
 const putUser = async (req, res, next) => {
   try {
-    const user = await userModel.findById(req.params.id).exec();
+    let user;
+    if (
+      (req.user.role == "user" && req.user.id == req.params.id) ||
+      req.user.role == "admin"
+    ) {
+      user = await userModel.findById(req.params.id).exec();
+    }
     if (!user) {
       throw new apiError(404, "User was not found");
     }
+    if (!req.body.name || !req.body.email || !req.body.password) {
+      throw new apiError(400, "Name,email and password are required");
+    }
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(req.body.password, salt);
     const updatedUser = await userModel.findByIdAndUpdate(
       req.params.id,
       {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         role: req.body.role,
       },
       { new: true }

@@ -11,7 +11,7 @@ const checkRights = (requiredRight) => async (req, res, next) => {
       if (err) {
         throw new apiError(401, "Invalid Token");
       } else {
-        if (requiredRight != decoded.rights && decoded.rights != "admin") {
+        if (requiredRight != decoded.role && decoded.role != "admin") {
           throw new apiError(403, "Forbidden");
         }
         req.user = decoded;

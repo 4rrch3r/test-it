@@ -6,7 +6,7 @@ const checkRights = require('../utils/checkRights');
 // eslint-disable-next-line import/extensions
 const userController = require('../controllers/index.js').userController;
 
-router.get('/',checkRights("user"),  userController.getUsers); // List all users public (public cutted info)
+router.get('/',checkRights("admin"),  userController.getUsers); // List all users public (public cutted info)
 router.post('/',checkRights("admin"),  userController.postUser); // Create a street write     
 router.get('/:id',checkRights("user"),  userController.getUser); // Retrieve a street read (read full info)
 router.put('/:id',checkRights("user"),  userController.putUser) // Update a street write PUT && PATCH

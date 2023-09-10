@@ -16,6 +16,7 @@ const resultSchema = new Schema({
   score: {
     type: Number,
     required: [true, "Score of the test is required"],
+    min:0
   },
   timestamp: {
     type: Date,

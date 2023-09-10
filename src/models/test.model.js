@@ -23,6 +23,7 @@ const testSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, "Title of the test is required"],
+    unique:true
   },
   description: {
     type: String,

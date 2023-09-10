@@ -1,3 +1,962 @@
 {
-    
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Test-it",
+    "description": "Easy platform to assess candidates ✅"
+  },
+  "host": "localhost:3000",
+  "basePath": "/test-it",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authorization routes"
+    },
+    {
+      "name": "user",
+      "description": "User routes "
+    },
+    {
+      "name": "test",
+      "description": "Test routes"
+    },
+    {
+      "name": "result",
+      "description": "Result routes"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register your account",
+        "description": "Registration with such required fields: email,name,password.Unique fields: email.Role field classifies your rights in the project and has only two options: admin, user(user by default).",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User's object that needs to be added ",
+            "required": true,
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "required": ["name", "email", "password"],
+              "properties": {
+                "name": { "type": "string", "example": "Ihor Pilipchuk" },
+                "email": {
+                  "type": "string",
+                  "example": "exampleMail@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "$2b$10$GT4CCvXq3IB5OgqpO7JhweynRnS/RQKxB2fCQsP.mY9ItWs.JG2/2"
+                },
+                "role": { "type": "string", "example": "admin" },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e29"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Name,email,password,phone number required"
+          },
+          "500": {
+            "description": "Duplicate key error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Log in into your account",
+        "description": "Returns a cookie that has access_token with rights",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "exampleMail@gmail.com"
+                },
+                "password": {
+                  "example": "examplePassword123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "login success"
+          },
+          "400": {
+            "description": "Email,password required"
+          },
+          "401": {
+            "description": "Password is incorrect"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Log out of your account",
+        "description": "Erases access_token from cookies",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Logout success"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get current list of users",
+        "produces": ["application/json"],
+        "description": "Returns a list of user.Admin role required.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["name", "email", "password"],
+              "properties": {
+                "name": { "type": "string", "example": "Ihor Pilipchuk" },
+                "email": {
+                  "type": "string",
+                  "example": "exampleMail@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "$2b$10$GT4CCvXq3IB5OgqpO7JhweynRnS/RQKxB2fCQsP.mY9ItWs.JG2/2"
+                },
+                "role": { "type": "string", "example": "admin" },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e29"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": ["user"],
+        "summary": "Add a user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "description": "Adds a user to the user list. Admin role required.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User's object that needs to be added ",
+            "required": true,
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["name", "email", "password"],
+              "properties": {
+                "name": { "type": "string", "example": "Ihor Pilipchuk" },
+                "email": {
+                  "type": "string",
+                  "example": "exampleMail@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "$2b$10$GT4CCvXq3IB5OgqpO7JhweynRnS/RQKxB2fCQsP.mY9ItWs.JG2/2"
+                },
+                "role": { "type": "string", "example": "admin" },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e29"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Name,email,password,phone number required"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Duplicate key error"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get current information about user by id",
+        "description": "Returns a full info about a user by id. User role allows you to check info about yourself, admin role allows you to check info about any user.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["name", "email", "password"],
+              "properties": {
+                "name": { "type": "string", "example": "Ihor Pilipchuk" },
+                "email": {
+                  "type": "string",
+                  "example": "exampleMail@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "$2b$10$GT4CCvXq3IB5OgqpO7JhweynRnS/RQKxB2fCQsP.mY9ItWs.JG2/2"
+                },
+                "rights": { "type": "string", "example": "admin" },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e29"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User was not found"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "description": "Change information about user by id.User role allows you to change info about yourself, admin role allows you to change info about any user.",
+        "summary": "Change information about user by id",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["name", "email", "password"],
+              "properties": {
+                "name": { "type": "string", "example": "Changed Name" },
+                "email": {
+                  "type": "string",
+                  "example": "exampleMailChanged@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "changedPassword"
+                },
+                "role": { "type": "string", "example": "admin" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["name", "email", "password"],
+              "properties": {
+                "name": { "type": "string", "example": "Changed Name" },
+                "email": {
+                  "type": "string",
+                  "example": "exampleMailChanged@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "12b$10$GT4CCvXq3IB5OgqpO7JhweynRnS/RQKxB2fCQsP.mY9ItWs.JG2/2"
+                },
+                "role": { "type": "string", "example": "admin" },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e29"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "description": "Delete a user by id. Admin role required.",
+        "summary": "Delete a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        }
+      }
+    },
+    "/tests/": {
+      "get": {
+        "tags": ["test"],
+        "summary": "Get current list of tests",
+        "produces": ["application/json"],
+        "description": "Returns a list of tests.Admin role required.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["title", "description", "questions"],
+              "properties": {
+                "title": { "type": "string", "example": "JavaScript basics" },
+                "description": {
+                  "type": "string",
+                  "example": "The JavaScript test assesses knowledge of programming in the JavaScript language and core web development concepts."
+                },
+                "questions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "questionText": {
+                        "type": "string",
+                        "example": "What is a cookie?"
+                      },
+                      "answerOptions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": ["A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs.", "Tea snack.", "Cookie is a cross-platform, open-source server environment that can run on Windows, Linux, Unix, macOS, and more. Cookie is a back-end JavaScript runtime environment, runs on the V8 JavaScript engine, and executes JavaScript code outside a web browser.", "Same as a candy."]
+                      },
+                      "correctAnswer": {
+                        "type": "string",
+                        "example": "A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs."
+                      }
+                    }
+                  }
+                },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e00"
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden"
+        }
+      },
+    "post": {
+      "tags": ["test"],
+      "summary": "Add a test",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "description": "Adds a test to the test list. User role required.",
+      "parameters": [
+        {
+          "in": "body",
+          "name": "body",
+          "description": "Test's object that needs to be added ",
+          "required": true,
+          "schema": { "$ref": "#/definitions/Test" }
+        }
+      ],
+      "responses": {
+        "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["title", "description", "questions"],
+              "properties": {
+                "title": { "type": "string", "example": "JavaScript basics" },
+                "description": {
+                  "type": "string",
+                  "example": "The JavaScript test assesses knowledge of programming in the JavaScript language and core web development concepts."
+                },
+                "questions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "questionText": {
+                        "type": "string",
+                        "example": "What is a cookie?"
+                      },
+                      "answerOptions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": ["A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs.", "Tea snack.", "Cookie is a cross-platform, open-source server environment that can run on Windows, Linux, Unix, macOS, and more. Cookie is a back-end JavaScript runtime environment, runs on the V8 JavaScript engine, and executes JavaScript code outside a web browser.", "Same as a candy."]
+                      },
+                      "correctAnswer": {
+                        "type": "string",
+                        "example": "A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs."
+                      }
+                    }
+                  }
+                },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e00"
+                }
+              }
+            }
+          },
+        "400": {
+          "description": "title, description, questions required"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Duplicate key error"
+        }
+      }
+    }
+  },
+  "/tests/{id}": {
+    "get": {
+      "tags": ["test"],
+      "summary": "Get current information about test by id",
+      "description": "Returns a full info about a test by id. User role required.",
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["title", "description", "questions"],
+              "properties": {
+                "title": { "type": "string", "example": "JavaScript basics" },
+                "description": {
+                  "type": "string",
+                  "example": "The JavaScript test assesses knowledge of programming in the JavaScript language and core web development concepts."
+                },
+                "questions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "questionText": {
+                        "type": "string",
+                        "example": "What is a cookie?"
+                      },
+                      "answerOptions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": ["A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs.", "Tea snack.", "Cookie is a cross-platform, open-source server environment that can run on Windows, Linux, Unix, macOS, and more. Cookie is a back-end JavaScript runtime environment, runs on the V8 JavaScript engine, and executes JavaScript code outside a web browser.", "Same as a candy."]
+                      },
+                      "correctAnswer": {
+                        "type": "string",
+                        "example": "A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs."
+                      },
+                      "id": {
+                        "type": "string",
+                        "example": "64bc1a05a3e31346676e8e01"
+                      }
+                    }
+                  }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "64bc1a05a3e31346676e8e00"
+                  }
+              }
+              
+            }
+          },
+        "404": {
+          "description": "Test was not found"
+        },
+        "403": {
+          "description": "Forbidden"
+        }
+      }
+    },
+    "put": {
+      "tags": ["test"],
+      "description": "Change information about test by id.Admin role required.",
+      "summary": "Change information about test by id",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "required": ["title", "description", "questions"],
+            "properties": {
+              "title": { "type": "string", "example": "JavaScript basics" },
+              "description": {
+                "type": "string",
+                "example": "The JavaScript test assesses knowledge of programming in the JavaScript language and core web development concepts."
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "questionText": {
+                      "type": "string",
+                      "example": "What is eval?"
+                    },
+                    "answerOptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["The eval() function evaluates JavaScript code represented as a string. The string can be a JavaScript expression, variable, statement, or sequence of statements.", "The opposite of good.", "JavaScript documentation.", "Eval means having no value; in other words eval is zero."]
+                    },
+                    "correctAnswer": {
+                      "type": "string",
+                      "example": "The eval() function evaluates JavaScript code represented as a string. The string can be a JavaScript expression, variable, statement, or sequence of statements."
+                    }
+                  }
+                }
+              }
+            }
+            
+      }
+        }
+      ],
+      "responses": {
+        "200": {
+            "description": "Success",
+            "schema": {
+                "type": "object",
+                "required": ["title", "description", "questions"],
+                "properties": {
+                  "title": { "type": "string", "example": "JavaScript basics" },
+                  "description": {
+                    "type": "string",
+                    "example": "The JavaScript test assesses knowledge of programming in the JavaScript language and core web development concepts."
+                  },
+                  "questions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "questionText": {
+                          "type": "string",
+                          "example": "What is eval?"
+                        },
+                        "answerOptions": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["The eval() function evaluates JavaScript code represented as a string. The string can be a JavaScript expression, variable, statement, or sequence of statements.", "The opposite of good.", "JavaScript documentation.", "Eval means having no value; in other words eval is zero."]
+                        },
+                        "correctAnswer": {
+                          "type": "string",
+                          "example": "The eval() function evaluates JavaScript code represented as a string. The string can be a JavaScript expression, variable, statement, or sequence of statements."
+                        }
+                      }
+                    }
+                  },
+                  "id": {
+                    "type": "string",
+                    "example": "64bc1a05a3e31346676e8e00"
+                  }
+                }
+                
+          }
+          },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+          "description": "Test was not found"
+        }
+      }
+    },
+    "delete": {
+      "tags": ["test"],
+      "description": "Delete a test by id. Admin role required.",
+      "summary": "Delete a test by id",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Test deleted"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+          "description": "Test was not found"
+        }
+      }
+    }
+  },
+  "/results/": {
+    "get": {
+      "tags": ["result"],
+      "summary": "Get current list of results",
+      "produces": ["application/json"],
+      "description": "Returns a list of results.Admin role required.",
+      "responses": {
+        "200": {
+          "description": "Success",
+          "schema": {
+            "type": "object",
+            "required": ["test", "user", "score"],
+            "properties": {
+              "test": { "type": "string", "example": "64fddb9407bfeac05a636d10" },
+              "user": {
+                "type": "string",
+                "example": "64fdd4f6057b133bcc8faa61"
+              },
+              "score": {
+                "type": "integer",
+                "example": 10
+              },
+              "id": {
+                "type": "string",
+                "example": "64bc1a05a3e31346676e8e66"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden"
+        }
+      }
+    },
+    "post": {
+      "tags": ["result"],
+      "summary": "Add a result",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "description": "Adds a result to the result list. User role required.",
+      "parameters": [
+        {
+          "in": "body",
+          "name": "body",
+          "description": "Result's object that needs to be added ",
+          "required": true,
+          "schema": { "$ref": "#/definitions/Result" }
+        }
+      ],
+      "responses": {
+        "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["test", "user", "score"],
+              "properties": {
+                "test": { "type": "string", "example": "64fddb9407bfeac05a636d10" },
+                "user": {
+                  "type": "string",
+                  "example": "64fdd4f6057b133bcc8faa61"
+                },
+                "score": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e66"
+                }
+              }
+            }
+          },
+        "400": {
+            "description": "Result with such user id and test id already exists"
+          },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+            "description": "User/Test was not found"
+          }
+      }
+    }
+  },
+  "/results/{id}": {
+    "get": {
+      "tags": ["result"],
+      "summary": "Get current information about result by id",
+      "description": "Returns a full info about a result by id. User role required.",
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["test", "user", "score"],
+              "properties": {
+                "test": { "type": "string", "example": "64fddb9407bfeac05a636d10" },
+                "user": {
+                  "type": "string",
+                  "example": "64fdd4f6057b133bcc8faa61"
+                },
+                "score": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e66"
+                }
+              }
+            }
+          },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+            "description": "Result was not found"
+        }
+      }
+    },
+    "put": {
+      "tags": ["result"],
+      "description": "Change information about result by id.Admin role required.",
+      "summary": "Change information about result by id",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "required": ["test", "user", "score"],
+            "properties": {
+              "test": { "type": "string", "example": "64fddb9407bfeac05a636d10" },
+              "user": {
+                "type": "string",
+                "example": "64fd84868196ed3da9519d17"
+              },
+              "score": {
+                "type": "integer",
+                "example": 10
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": ["test", "user", "score"],
+              "properties": {
+                "test": { "type": "string", "example": "64fddb9407bfeac05a636d10" },
+                "user": {
+                  "type": "string",
+                  "example": "64fd84868196ed3da9519d17"
+                },
+                "score": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "id": {
+                  "type": "string",
+                  "example": "64bc1a05a3e31346676e8e66"
+                }
+              }
+            }
+          },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+          "description": "Result was not found"
+        }
+      }
+    },
+    "delete": {
+      "tags": ["result"],
+      "description": "Delete a result by id. Admin role required.",
+      "summary": "Delete a result by id",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Result deleted"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+          "description": "Result was not found"
+        }
+      }
+    }
+  }
+},
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": ["name", "email", "password"],
+      "properties": {
+        "name": { "type": "string", "example": "Ihor Pilipchuk" },
+        "email": { "type": "string", "example": "exampleMail@gmail.com" },
+        "password": { "type": "string", "example": "examplePassword123" },
+        "role": { "type": "string", "example": "admin" }
+      }
+    },
+    "Test": {
+            "type": "object",
+            "required": ["title", "description", "questions"],
+            "properties": {
+              "title": { "type": "string", "example": "JavaScript basics" },
+              "description": {
+                "type": "string",
+                "example": "The JavaScript test assesses knowledge of programming in the JavaScript language and core web development concepts."
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "questionText": {
+                      "type": "string",
+                      "example": "What is a cookie?"
+                    },
+                    "answerOptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs.", "Tea snack.", "Cookie is a cross-platform, open-source server environment that can run on Windows, Linux, Unix, macOS, and more. Cookie is a back-end JavaScript runtime environment, runs on the V8 JavaScript engine, and executes JavaScript code outside a web browser.", "Same as a candy."]
+                    },
+                    "correctAnswer": {
+                      "type": "string",
+                      "example": "A cookie is a piece of data that is stored on your computer to be accessed by your browser. Cookies are saved as key/value pairs."
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "string",
+              "example": "64bc1a05a3e31346676e8e00"
+            }
+      },
+    "Result":{
+        "type": "object",
+        "required": ["test", "user", "score"],
+        "properties": {
+          "test": { "type": "string", "example": "64fddb9407bfeac05a636d10" },
+          "user": {
+            "type": "string",
+            "example": "64fdd4f6057b133bcc8faa61"
+          },
+          "score": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      }
+  }
 }
