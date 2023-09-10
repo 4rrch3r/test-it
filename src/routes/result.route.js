@@ -3,11 +3,11 @@ const router = express.Router();
 const checkRights = require('../utils/checkRights');
 const resultController = require('../controllers/index.js').resultController;
 
-router.get('/',checkRights("admin"),  resultController.getResults); // List all users public (public cutted info)
-router.post('/',checkRights("user"),  resultController.postResult); // Create a street write     
-router.get('/:id',checkRights("user"),  resultController.getResult); // Retrieve a street read (read full info)
-router.put('/:id',checkRights("admin"),  resultController.putResult) // Update a street write PUT && PATCH
-router.delete('/:id',checkRights("admin"),  resultController.deleteResult); // Delete a street write
+router.get('/',checkRights("admin"),  resultController.getResults); 
+router.post('/',checkRights("user"),  resultController.postResult);    
+router.get('/:id',checkRights("user"),  resultController.getResult); 
+router.put('/:id',checkRights("admin"),  resultController.putResult) 
+router.delete('/:id',checkRights("admin"),  resultController.deleteResult); 
 
 
 module.exports = router;
