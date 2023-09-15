@@ -1,5 +1,3 @@
-test-it
-![test-it](https://github.com/4rrch3r/test-it/assets/75779729/f99f52d0-ce40-4827-beed-f6a5719405b7)
 #Description
 
 Back-end application that helps you to assess candidates.
@@ -11,3 +9,5 @@ Detailed info about routes is availiable on :
 https://test-it-88za.onrender.com/test-it/docs/
 or
 http://localhost:3000/test-it/docs/
+
+![test-it](https://github.com/4rrch3r/test-it/assets/75779729/f99f52d0-ce40-4827-beed-f6a5719405b7)
