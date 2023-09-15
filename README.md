@@ -1,4 +1,4 @@
-#Description
+# Description
 
 Back-end application that helps you to assess candidates.
 It was made on Express framework and such libraries as: bcrypt,cookie-parser,cors,dotenv,jsonwebtoken,mongoose,nodemon,swagger-jsdoc,swagger-ui-express.Deploy commands are written in Dockerfile.
